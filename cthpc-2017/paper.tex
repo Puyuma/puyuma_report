@@ -75,7 +75,7 @@ The overall system architecture is shown in figure \ref{fig:overall_arch}.
 
 \subsection{Hardware}
 
-For pursuing inexpensive and stable autonomous vehicle system, we limited the budget under 100 dollars USD, but the autonomous vehicle still has abilities of lane following, multiple car Interaction and route planning. The table \ref{hardware_list} shows the overall budgets.
+We limited the budget of whole hardware under 100 dollars USD, but the autonomous vehicle prototype still has abilities of lane following, multiple car Interaction and route planning. The table \ref{hardware_list} shows the details.
 
 \begin{table}
 	\centering
@@ -98,7 +98,7 @@ For pursuing inexpensive and stable autonomous vehicle system, we limited the bu
 
 \subsection{Hard Real-Time Operating System}
 
-RTOS guarantees the response time of real time task within specified time constraints \cite{RTOS}, often referred to as "deadline", and a hard real-time OS can always meet a deadline deterministically. We adopt Xenomai \cite{Xenomai}, an open source real-time Linux extension, allowing periodic preemptive hard real-time tasks along with typical Linux kernel and userspace. The Cobalt core in Xenomai 3 is a co-kernel which supplements the Linux kernel for delivering real-time services with very low latency \cite{rtlws2015}, shown i0n figure \ref{fig:xeno_arch}, dealing with all time-critical events, such as interrupt handling, and scheduling real-time threads. Cobalt core, thereby has higher priority over Linux kernel. Our self-driving car benefits from deterministic behavior in Xenomai 3.
+RTOS guarantees the response time of real time task within specified time constraints \cite{RTOS}, often referred to as "deadline", and a hard real-time OS can always meet a deadline deterministically. We adopt Xenomai \cite{Xenomai}, an open source real-time Linux extension, allowing periodic preemptive hard real-time tasks along with typical Linux kernel and userspace. The Cobalt core in Xenomai 3 is a co-kernel which supplements the Linux kernel for delivering real-time services with very low latency \cite{rtlws2015}, shown in figure \ref{fig:xeno_arch}, dealing with all time-critical events, such as interrupt handling, and scheduling real-time threads. Cobalt core, thereby has higher priority over Linux kernel. Our self-driving car benefits from deterministic behavior in Xenomai 3.
 
 \begin{figure}
 	\centering
@@ -117,7 +117,7 @@ We built the software PWM kernel module with Xenomai real-time API, named after 
 
 Camera calibration is an early stage mission before performing computer vision operations. There are two sets of parameters needed to be found: intrinsic parameters and extrinsic parameter. By estimating them we can know the relation between 2D image plane and 3D world.
 
-The intrinsic matrix describes the projection from 3D world into 2D image plane. The ideal linear model is consist of focal length, pixel size and principal point. The nonlinear effect like lens distortion are also important however can not described in the linear camera model and usually solved by numerical methods. Figure \ref{fig:intrinsic} shows the effect of intrinsic calibration; The extrinsic matrix describes the translation and rotation of camera with respect to the world frame, which means the angle and position of camera taking pictures in 3D world. Applying extrinsic matrix causes ground projection, showed in Figure \ref{fig:extrinsic}, which is like a bird eye view.
+The intrinsic matrix describes the projection from 3D world into 2D image plane. The ideal linear model consists of focal length, pixel size and principal point. The nonlinear effect like lens distortion are also important, but it can not be described in the linear camera model, usually solved by numerical methods. Figure \ref{fig:intrinsic} shows the effect of intrinsic calibration; The extrinsic matrix describes the translation and rotation of camera with respect to the world frame, which means the angle and position of camera taking pictures in 3D world. Applying extrinsic matrix causes ground projection, showed in Figure \ref{fig:extrinsic}, which is like a bird eye view.
 
 \begin{figure}
 	\centering
@@ -135,11 +135,9 @@ The intrinsic matrix describes the projection from 3D world into 2D image plane.
 
 \subsubsection{Segment Detection}
 
-Before the pose estimation, first have to do is to detect the lane segments from the image. The lane detector can be achieved by using Canny edge detection, color thresholding method and Hough transform.
-
-First, transform the image from RGB color space into the HSV color space then use the color thresholding method to find the interested color like yellow or white in the image. Next, use Canny edge detection to detect the edges in the image, and use the bitwise and operation on color thresholding image and Canny edge image. This is a preparation step for Hough transform. Finally, apply the Hough Line transform comes out the segments.
+Before pose estimation, we have to detect lane segments from the retrieved images in advance. It can be achieved by using Canny edge detection, color thresholding method and Hough transform. First, we transform the image from RGB color space into the HSV color space then use the color thresholding method to find the interested color like yellow or white in the image. Next, we apply Canny edge detection to detect the edges in the image, and use the bitwise and operation on color thresholding image and Canny edge image. This is a preparation step for Hough transform. Finally, apply the Hough Line transform comes out the segments.
  
-Although the lane detector can find the segments, we still need to know the side of the lane mark that the segments is on, which is much important to pose estimation. Segment side can be determined by reading multiple pixels in both positive and negative direction of the segment normal vector on color thresholded image. Figure \ref{fig:lane_detect} visualizes the segment locations and segment sides, and also shows the values of $d$ and $\phi$. The lane detector only works at the bottom ROI(Region of Interest) part because there is much possible to be the lane.
+Although the lane detector can find the segments, we still need to be aware of the side of lane mark that the segments is on, which is much important to pose estimation. Segment side can be determined by reading multiple pixels in both positive and negative direction of the segment normal vector on color thresholded image. Figure \ref{fig:lane_detect} visualizes the segment locations and segment sides, and also shows the values of $d$ and $\phi$. The lane detector only works at the bottom ROI(Region of Interest) part because there is much possible to be the lane.
 
 \begin{figure}
 	\centering

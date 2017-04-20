@@ -64,7 +64,7 @@ In recent years, the Robot Operating System (ROS) \cite{ROS} incorporates the si
 
 \section{System Architecture}
 
-The system is designed for multiple self-driving cars, enabling collaborative computer vision, map navigation, motor control, and wireless communications, shown in figure \ref{fig:overall_arch}. It aggregates local pose graphs obtained from its multiple cars into a global pose graph, which it then feeds back to the cars to increase their mapping and localization effectiveness.
+The system is designed for multiple self-driving cars, enabling collaborative computer vision, map navigation, motor control, and wireless communications, shown in Figure \ref{fig:overall_arch}. It aggregates local pose graphs obtained from its multiple cars into a global pose graph, which it then feeds back to the cars to increase their mapping and localization effectiveness.
 
 \begin{figure}
 	\centering
@@ -98,7 +98,7 @@ Despite limited the budget shown in table \ref{hardware_list}, our autonomous ve
 
 \subsection{Hard Real-Time Operating System}
 
-RTOS guarantees the response time of real time task within specified time constraints \cite{RTOS}, often referred to as "deadline", and a hard real-time OS can always meet a deadline deterministically. We adopt Xenomai \cite{Xenomai}, an open source real-time Linux extension, allowing periodic preemptive hard real-time tasks along with typical Linux kernel and userspace. The Cobalt core in Xenomai 3 is a co-kernel which supplements the Linux kernel for delivering real-time services with very low latency \cite{rtlws2015}, shown in figure \ref{fig:xeno_arch}, dealing with all time-critical events, such as interrupt handling, and scheduling real-time threads. Cobalt core, thereby has higher priority over Linux kernel. Our self-driving car benefits from deterministic behavior in Xenomai 3.
+RTOS guarantees the response time of real time task within specified time constraints \cite{RTOS}, often referred to as "deadline", and a hard real-time OS can always meet a deadline deterministically. We adopt Xenomai \cite{Xenomai}, an open source real-time Linux extension, allowing periodic preemptive hard real-time tasks along with typical Linux kernel and userspace. The Cobalt core in Xenomai 3 is a co-kernel which supplements the Linux kernel for delivering real-time services with very low latency \cite{rtlws2015}, shown in Figure \ref{fig:xeno_arch}, dealing with all time-critical events, such as interrupt handling, and scheduling real-time threads. Cobalt core, thereby has higher priority over Linux kernel. Our self-driving car benefits from deterministic behavior in Xenomai 3.
 
 \begin{figure}
 	\centering
@@ -226,11 +226,11 @@ Xenomai with customized kernel & 42.678us  & 29.973us    & 27.11us
 
 \subsection{System Real-Time Performance}
 
-Real-time performance is measured by stressing the system with LTP and applying cyclictest. We use LTP $-i$ and $-c$ flags to present the background CPU load with multiple processes and accessing on IO bus. Our customized Linux kernel brings better real-time ability in both user and kernel space, shown in figure \ref{fig:xeno_perf_modify}. Table \ref{xeno_compare} records the maximum latency for Xenomai.
+Real-time performance is measured by stressing the system with LTP and applying cyclictest. We use LTP $-i$ and $-c$ flags to present the background CPU load with multiple processes and accessing on IO bus. Our customized Linux kernel brings better real-time ability in both user and kernel space, shown in Figure \ref{fig:xeno_perf_modify}. Table \ref{xeno_compare} records the maximum latency for Xenomai.
 
 \subsection{KsoftPWM}
 
-The KsoftPWM outperforms in better real-time ability, shown in figure \ref{fig:ksoftpwm_perf}. The latency distribution of WiringPi is similar to nRTPKM, since both of them are just normal Linux userspace tasks rather than hard real-time one. The difference of minimum latency between WiringPi and nRTPKM was caused by different implementation. nRTPKM uses sleep function to simulate the PWM signals while WiringPi uses busy-waiting delay which may cause higher system load.
+The KsoftPWM outperforms in better real-time ability, shown in Figure \ref{fig:ksoftpwm_perf}. The latency distribution of WiringPi is similar to nRTPKM, since both of them are just normal Linux userspace tasks rather than hard real-time one. The difference of minimum latency between WiringPi and nRTPKM was caused by different implementation. nRTPKM uses sleep function to simulate the PWM signals while WiringPi uses busy-waiting delay which may cause higher system load.
 
 \begin{figure}
 	\centering

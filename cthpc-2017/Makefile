@@ -1,14 +1,12 @@
-PAPER_NAME = puyuma
+all:	paper.pdf
 
-all:	$(PAPER_NAME).pdf
-
-$(PAPER_NAME).pdf: $(PAPER_NAME).tex
+paper.pdf: paper.tex
 	pdflatex $^
 	bibtex paper >/dev/null || echo
 	pdflatex $^ 2>/dev/null >/dev/null
 
 edit:
-	texmaker $(PAPER_NAME).tex &
+	texmaker paper.tex &
 
 clean:
-	rm -f *.dvi *.aux *.log *.ps *.pdf *.out $(PAPER_NAME).bbl $(PAPER_NAME).blg
+	rm -f *.dvi *.aux *.log *.ps *.pdf *.out paper.bbl paper.blg

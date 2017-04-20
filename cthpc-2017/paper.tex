@@ -64,7 +64,7 @@ In recent years, the Robot Operating System (ROS) \cite{ROS} incorporates the si
 
 \section{System Architecture}
 
-The overall system architecture is shown in figure \ref{fig:overall_arch}.
+The system is designed for multiple self-driving cars, enabling collaborative computer vision, map navigation, motor control, and wireless communications, shown in figure \ref{fig:overall_arch}. It aggregates local pose graphs obtained from its multiple cars into a global pose graph, which it then feeds back to the cars to increase their mapping and localization effectiveness.
 
 \begin{figure}
 	\centering
@@ -75,7 +75,7 @@ The overall system architecture is shown in figure \ref{fig:overall_arch}.
 
 \subsection{Hardware}
 
-We limited the budget of whole hardware under 100 dollars USD, but the autonomous vehicle prototype still has abilities of lane following, multiple car Interaction and route planning. The table \ref{hardware_list} shows the details.
+Despite limited the budget shown in table \ref{hardware_list}, our autonomous vehicle prototype still has abilities of lane following, multiple car Interaction and route planning.
 
 \begin{table}
 	\centering

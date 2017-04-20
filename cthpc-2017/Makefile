@@ -4,6 +4,7 @@ paper.pdf: paper.tex
 	pdflatex $^
 	bibtex paper >/dev/null || echo
 	pdflatex $^ 2>/dev/null >/dev/null
+	pdflatex $^
 
 edit:
 	texmaker paper.tex &

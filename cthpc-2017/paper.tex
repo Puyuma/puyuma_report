@@ -27,13 +27,13 @@ Chun-Yi He\IEEEauthorrefmark{2},
 Ching-Chun (Jim) Huang\IEEEauthorrefmark{3}}
 
 \IEEEauthorblockA{
-\IEEEauthorrefmark{1}Department of Computer Science and Information Engineering,\\Providence University, Taiwan}
+\IEEEauthorrefmark{1}Department of Computer Science and Information Engineering, Providence University, Taiwan}
 
 \IEEEauthorblockA{
-\IEEEauthorrefmark{2}Department of Engineering Science,\\National Cheng Kung University, Taiwan}
+\IEEEauthorrefmark{2}Department of Engineering Science, National Cheng Kung University, Taiwan}
     
 \IEEEauthorblockA{
-\IEEEauthorrefmark{3}Department of Computer Science and Information Engineering,\\National Cheng Kung University, Taiwan}
+\IEEEauthorrefmark{3}Department of Computer Science and Information Engineering, National Cheng Kung University, Taiwan}
 }
 
 
@@ -50,13 +50,21 @@ A holistic design and cost-efficient platform to construct self-driving systems 
 \section{Introduction}
 As an example of autonomous vehicles, the Google Car has already succeeded in covering thousands of miles of real-road driving \cite{autonomous} with the promising benefits by increasing traffic efficiency \cite{traffic-flow}, reducing pollution \cite{reduce-pollution}, and eliminating up to 90\% of traffic accidents \cite{traffic-accident}. However, it is not straightforward for most people to build an autonomous vehicle due to very high bill of materials (BOM) and sufficient system software infrastructure, that prevents from potential innovations and collobrations, especially to arising maker movement \cite{maker}.
 
-
+The goal of this research was to adapt open source foundation and to design algorithms for a self-driving miniature vehicle, which should be able to reliably follow lane markings, overtake stationary obstacles, and park automatically for inexpensive hardware configurations. We explicitly explore the possibility to not only exploit hardware components but also the software/hardware interface to read data from sensors and to control the actors for steering and acceleration, which was evaluated by various system services of the incorporation of the real-time extension for GNU/Linux. Afterwards, a short overview of the development process and the evaluation of the software is presented.
 
 \section{Related Work}
 
+In this section, we concentrate on currently available frameworks for the development of component-based embedded automotive and robotics software.
+
+In 2016, MIT CSAIL took students on a trip to "Duckietown" \cite{Duckietown} to create self-driving taxis that can navigate the roads of a model city with just a single on-board camera and no pre-programmed maps. Students developed algorithms to read traffic signs and notice pedestrian-ducks, and learned to integrate different disciplines like control theory, machine learning, and computer vision into their systems. Eventually, MIT distributes all the lecture materials, middleware, drivers, ROS modules, and etc. as open source software.
+
+AUTOSAR (AUTomotive Open System ARchitecture) is a standardized architecture for automotive software systems. Its primary focus is the system development process for electronic control units (ECU) and does not provide specific support for sensor/actuator-based autonomou ssystem development \cite{rtes}. An implementation of an AUTOSAR-compliant embedded software platform is Arctic Core \cite{arctic-core}, offering a real-time operating system, memory services, and communication services such as CAN and LIN.
+
+In recent years, the Robot Operating System (ROS) \cite{ROS} incorporates the simulationenvironment Player/Stage/Gazebo \cite{player/stage}, and it has been widely adopted as a meta-OS for many popular robotic platforms. The abstraction of physical sensors and actuators enables ROS to support a wide range of robotics platform and reuse of components by implementing publish-subscribe design pattern for inter-component communications.
+
 \section{System Architecture}
 
-This section introduces what was integrated into our autonomous vehicle system, and how this work leverage the whole system. The overall system architecture is shown in figure \ref{fig:overall_arch}.
+The overall system architecture is shown in figure \ref{fig:overall_arch}.
 
 \begin{figure}
 	\centering
@@ -65,30 +73,13 @@ This section introduces what was integrated into our autonomous vehicle system, 
 	\label{fig:overall_arch}
 \end{figure}
 
-\subsection{Robot Operating System(ROS)}
-
-Robot Operating System, or ROS, is a system designed for robot. Instead a operating system, it’s a framework above operating system, proposing a identical interface around different machine architecture. As a middleware for interprocess communication, ROS takes a publish-subscribe pattern for data transfer abstraction. The implementation support multiple programming language API, enhance the system flexibility and scalability.
-
-Moreover, ROS is an open-source collaborative platform. Developers around the world share their research across many field,like navigation, manipulation and perception. Based on this, other developers could save much cost for frastructure and concentrate on their own work.
-
-\subsection{Hard Real-Time Operating System - Xenomai}
-
-Real-time operating system (RTOS) guarantees the response time of real time task within specified time constraints, often referred to as “deadline”. A soft real-time OS can usually or generally meet a deadline, and a hard real-time OS can always meet a deadline deterministically. The real-time Linux extension for this project is Xenomai which provides two mechanisms, Cobalt and Mercury, to implement the real-time task. This paper just mention the Cobalt mechanism which we used for the autonomous vehicle system. Xenomai built the small extension named Cobalt into the Linux kernel,shown in figure \ref{fig:xeno_arch}, dealing with all time-critical activities, such as handling interrupts, and scheduling real-time threads. The Cobalt core has higher priority over the native Linux kernel. With the Cobalt mechanism, this project benefits from the RTOS API provided by Xenomai and abundant Linux services provided by native Linux kernel. As the above, this project also gains the portability since the real time environment is based on Linux.
-
-\begin{figure}
-	\centering
-	\includegraphics[width=3in]{img/xeno_arch.png}
-	\caption{Xenomai Cobalt Architecture}
-	\label{fig:xeno_arch}
-\end{figure}
-
 \subsection{Hardware}
 
-For pursuing inexpensive and stable autonomous vehicle system, we limited the budgets within 4000 NTD, but the autonomous vehicle still has abilities of lane following, multiple car Interaction and route planning. The table \ref{hardware_list} shows the overall budgets.
+For pursuing inexpensive and stable autonomous vehicle system, we limited the budget under 100 dollars USD, but the autonomous vehicle still has abilities of lane following, multiple car Interaction and route planning. The table \ref{hardware_list} shows the overall budgets.
 
 \begin{table}
 	\centering
-	\caption{Hardware List}
+	\caption{Bill Of Materials}
 	\label{hardware_list}
 	\begin{tabular}{ll}
 		Hardware                & Budgets  \\
@@ -104,22 +95,27 @@ For pursuing inexpensive and stable autonomous vehicle system, we limited the bu
 \end{table}
 
 \section{Implementation}
-\subsection{Customized Linux Kernel}
 
-The Linux kernel is resident in memory after the booting stage, therefore the large kernel image and kernel module size may increase probability of cache miss. In order to minimize the latency effect from Linux kernel, we remove the unnecessary kernel module and file system to reduce the kernel module size. In addition, we adjust the performance related kernel configuration to ease the burden of interrupt handling.
+\subsection{Hard Real-Time Operating System}
 
-\subsection{Software-based PWM}
+RTOS guarantees the response time of real time task within specified time constraints \cite{RTOS}, often referred to as "deadline", and a hard real-time OS can always meet a deadline deterministically. We adopt Xenomai \cite{Xenomai}, an open source real-time Linux extension, allowing periodic preemptive hard real-time tasks along with typical Linux kernel and userspace. The Cobalt core in Xenomai 3 is a co-kernel which supplements the Linux kernel for delivering real-time services with very low latency \cite{rtlws2015}, shown i0n figure \ref{fig:xeno_arch}, dealing with all time-critical events, such as interrupt handling, and scheduling real-time threads. Cobalt core, thereby has higher priority over Linux kernel. Our self-driving car benefits from deterministic behavior in Xenomai 3.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=3in]{img/xeno_arch.png}
+	\caption{Cobalt core in Xenomai 3}
+	\label{fig:xeno_arch}
+\end{figure}
 
 Most system use pulse width modulation (PWM) to simulate the analog signal for smooth motor controlling. PWM signal was often generated by hardware, known as hardware PWM. On the contrary, using general-purpose input/output (GPIO) to simulate the PWM signal, known as software PWM.
 
 We built the software PWM kernel module with Xenomai real-time API, named after KsoftPWM. With the real-time application, it ensures the precision of KsoftPWM signal generation. Furthermore, the KsoftPWM was built in kernel space to eliminate the system call overhead from user space.
 
-
 \subsection{Lane Following Algorithm}
 
 \subsubsection{Calibration}
 
-Camera calibration is an early stage mission before doing the computer vision. There are two set of parameters need to be found, intrinsic parameters and extrinsic parameter. By estimate them we can know the relation between 2D image plane and 3D world.
+Camera calibration is an early stage mission before performing computer vision operations. There are two sets of parameters needed to be found: intrinsic parameters and extrinsic parameter. By estimating them we can know the relation between 2D image plane and 3D world.
 
 The intrinsic matrix describes the projection from 3D world into 2D image plane. The ideal linear model is consist of focal length, pixel size and principal point. The nonlinear effect like lens distortion are also important however can not described in the linear camera model and usually solved by numerical methods. Figure \ref{fig:intrinsic} shows the effect of intrinsic calibration; The extrinsic matrix describes the translation and rotation of camera with respect to the world frame, which means the angle and position of camera taking pictures in 3D world. Applying extrinsic matrix causes ground projection, showed in Figure \ref{fig:extrinsic}, which is like a bird eye view.
 

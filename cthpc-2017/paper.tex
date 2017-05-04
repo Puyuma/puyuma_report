@@ -113,9 +113,13 @@ Most system use pulse width modulation (PWM) to simulate the analog signal for s
 
 \subsubsection{Calibration}
 
-Camera calibration is an early stage mission before performing computer vision operations. There are two sets of parameters needed to be found: intrinsic parameters and extrinsic parameter. By estimating them we can know the relation between 2D image plane and 3D world.
+The camera was calibrated before activating the controller. Two parameters are used to describe the relationship between image and real world: intrinsic matrix and extrinsic matrix.
 
-The intrinsic matrix describes the projection from 3D world into 2D image plane. The ideal linear model consists of focal length, pixel size and principal point. The nonlinear effect like lens distortion are also important, but it can not be described in the linear camera model, usually solved by numerical methods. Figure \ref{fig:intrinsic} shows the effect of intrinsic calibration; The extrinsic matrix describes the translation and rotation of camera with respect to the world frame, which means the angle and position of camera taking pictures in 3D world. Applying extrinsic matrix causes ground projection, showed in Figure \ref{fig:extrinsic}, which is like a bird eye view.
+The intrinsic matrix is also refer to the camera projection, it is an ideal linear model consists of focal length, pixel size and principal point, the non-linear effects like lens distortion[\ref{fig:intrinsic}] are usually solved numerically.
+
+The extrinsic matrix represents the rotation and translation of camera with respect to the world. A linear transformation called Homograpy is applied on  the matrix to change the camera view purely mathematically.
+
+Figure \ref{fig:extrinsic} show the result of Homography transformation, we exploit the transformation for the lane detectoion algorithm, the result is usually called the bird view image or inverse perspective mapping.
 
 \begin{figure}
 	\centering
@@ -133,7 +137,7 @@ The intrinsic matrix describes the projection from 3D world into 2D image plane.
 
 \subsubsection{Segment Detection}
 
-Before pose estimation, we have to detect lane segments from the retrieved images in advance. It can be achieved by using Canny edge detection, color thresholding method and Hough transform. First, we transform the image from RGB color space into the HSV color space then use the color thresholding method to find the interested color like yellow or white in the image. Next, we apply Canny edge detection to detect the edges in the image, and use the bitwise and operation on color thresholding image and Canny edge image. This is a preparation step for Hough transform. Finally, apply the Hough Line transform comes out the segments.
+Before pose estimation, we have to detect lane segments from the retrieved images in advance. It can be achieved by using Canny edge detection, color thresholding method and Hough transform. First, we transform the image from RGB color space into the HSV color space then use the color thresholding method to find the interested color like yellow or white in the image. Next, we apply Canny edge detection to detect the edges in the image, and use the bitwise and operation on color thresholding image and Canny edge image. This is a preparation step for Hough transform. Finally, apply gthe Hough Line transform comes out the segments.
  
 Although the lane detector can find the segments, we still need to be aware of the side of lane mark that the segments is on, which is much important to pose estimation. Segment side can be determined by reading multiple pixels in both positive and negative direction of the segment normal vector on color thresholded image. Figure \ref{fig:lane_detect} visualizes the segment locations and segment sides, and also shows the values of $d$ and $\phi$. The lane detector only works at the bottom ROI(Region of Interest) part because there is much possible to be the lane.
 

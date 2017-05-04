@@ -124,22 +124,22 @@ Figure \ref{fig:extrinsic} show the result of Homography transformation, we expl
 \begin{figure}
 	\centering
 	\includegraphics[width=3.5in]{img/intrinsic.png}
-	\caption{Camera Undistortion}
+	\caption{Camera undistortion}
 	\label{fig:intrinsic}
 \end{figure}
 
 \begin{figure}	
 	\centering
 	\includegraphics[width=2in]{img/extrinsic.png}
-	\caption{Ground Projection}
+	\caption{Homography transformation (ground projection)}
 	\label{fig:extrinsic}
 \end{figure}
 
 \subsubsection{Segment Detection}
 
-Before pose estimation, we have to detect lane segments from the retrieved images in advance. It can be achieved by using Canny edge detection, color thresholding method and Hough transform. First, we transform the image from RGB color space into the HSV color space then use the color thresholding method to find the interested color like yellow or white in the image. Next, we apply Canny edge detection to detect the edges in the image, and use the bitwise and operation on color thresholding image and Canny edge image. This is a preparation step for Hough transform. Finally, apply gthe Hough Line transform comes out the segments.
- 
-Although the lane detector can find the segments, we still need to be aware of the side of lane mark that the segments is on, which is much important to pose estimation. Segment side can be determined by reading multiple pixels in both positive and negative direction of the segment normal vector on color thresholded image. Figure \ref{fig:lane_detect} visualizes the segment locations and segment sides, and also shows the values of $d$ and $\phi$. The lane detector only works at the bottom ROI(Region of Interest) part because there is much possible to be the lane.
+The lane segment detection is performed before pose estimation. The ROI(Region of interest) is used to increase the accuracy by eliminate the region. Canny edge detection, HSV color thresholding and Hough transform are used to find the lane segments.
+
+Figure \ref{fig:lane_detect} visualizes the lane pose and segments on the ROI region.
 
 \begin{figure}
 	\centering
@@ -148,19 +148,17 @@ Although the lane detector can find the segments, we still need to be aware of t
 	\label{fig:lane_detect}
 \end{figure}
 
-\subsubsection{Frame Transformation}
+\subsubsection{Pose Estimation}
 
-To reduce computation efforts, we apply extrinsic matrix that transforms the image from car's view to the road upper view to the segments, causing a straightforward coordinate parallel to lane. Moreover, the car camera is mounted in a distance from the origin. In order to know the real lateral displacement of the car, a transformation is needed for converting camera frame into car frame.
-
-\subsubsection{Pose Estimation for Single Segment}
-
-Due to the lane geometry, each of the segment that lane detector detects can be calculated to be a single pose data with respect to the lane, $d$ is the lateral displacement and $\phi$ is the orientation angle. We will put the data into the histogram filter for data filtering later. The process is similar to vote so we call it a vote generating function.
+We can generate the lane pose for every segments according to the lane geometry. The lane pose $d$ and $phi$ represent the car lateral displacement and orientation angle. we later feed this different poses into the histogram filter for a better prediction of the lane pose.
 
 \subsubsection{Histogram Filter}
 
-The segment poses generated in previous process will then be voted into the histogram filter. The histogram filter will find out the mode of these datas and eliminate the data out of the mode with certain range, i.e., the noise. After that, calculate the \textbf{mean} of the rest of the datas comes out a much accurate pose information.
+The histogram filter works like a vote box. We first filter out extreme value vote by the \textbf{mode}. We then calculate the \textbf{mean} of the rest of the data. Higher vote pose will have higher chance to dominate the result.
 
-\subsubsection{Controller}We build a differential wheeled car, on which there are two independent motors. The car can be turn by changing the speed rate between two motors, hence it does not require any additional steering mechanics. We use the well known algorithm \textbf{"PID controller"} to fix the orientation and lateral displacement.
+\subsubsection{Controller}
+
+We use the differential wheeled type car, which there are two independent motors on two side. The car can turn by changing the speed rate between two motors, therefore it doesn't requires a steering mechanics. We use the \textbf{PID Control} algorithm to fix the orientation and lateral displacement.
 
 The equation of PID controller in continuous time is given as:
 

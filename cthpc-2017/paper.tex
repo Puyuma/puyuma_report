@@ -137,7 +137,7 @@ Figure \ref{fig:extrinsic} show the result of Homography transformation, we expl
 
 \subsubsection{Segment Detection}
 
-The lane segment detection is performed before pose estimation. The ROI(Region of interest) is used to increase the accuracy by eliminate the region. Canny edge detection, HSV color thresholding and Hough transform are used to find the lane segments.
+The lane segment detection is performed before pose estimation. The ROI(Region of interest) is used to increase the accuracy by eliminating the region. Canny edge detection, HSV color thresholding and Hough transform are used to find the lane segments.
 
 Figure \ref{fig:lane_detect} visualizes the lane pose and segments on the ROI region.
 
@@ -150,15 +150,15 @@ Figure \ref{fig:lane_detect} visualizes the lane pose and segments on the ROI re
 
 \subsubsection{Pose Estimation}
 
-We can generate the lane pose for every segments according to the lane geometry. The lane pose $d$ and $phi$ represent the car lateral displacement and orientation angle. we later feed this different poses into the histogram filter for a better prediction of the lane pose.
+We can generate a single lane pose for every segments according to the lane geometry. The lane pose $d$ and $phi$ represent the car lateral displacement and orientation angle. we later feed the poses into the histogram filter for a better prediction of the lane pose.
 
 \subsubsection{Histogram Filter}
 
-The histogram filter works like a vote box. We first filter out extreme value vote by the \textbf{mode}. We then calculate the \textbf{mean} of the rest of the data. Higher vote pose will have higher chance to dominate the result.
+The histogram filter works like a vote box. We first filter out extreme value by calculate the \textbf{mode}, then calculate the \textbf{mean} of the rest of the data. Higher vote pose will have higher chance to dominate the result.
 
 \subsubsection{Controller}
 
-We use the differential wheeled type car, which there are two independent motors on two side. The car can turn by changing the speed rate between two motors, therefore it doesn't requires a steering mechanics. We use the \textbf{PID Control} algorithm to fix the orientation and lateral displacement.
+Puyuma is a differential wheeled type car. There are two independent motors on two side. The car can be turned by changing the speed rate between two motors, therefore, it does not requires any steering mechanics. We use the \textbf{PID Control} algorithm to fix the orientation and lateral displacement.
 
 The equation of PID controller in continuous time is given as:
 

@@ -145,7 +145,7 @@ Figure \ref{fig:extrinsic} show the result of Homography transformation, we expl
 
 \subsubsection{Segment Detection}
 
-The lane segment detection is performed before pose estimation. The ROI(Region of interest) is used to increase the accuracy by eliminating the region. Canny edge detection, HSV color thresholding and Hough transform are used to find the lane segments.
+The lane segment detection is performed before pose estimation. We first cut out the bottom half image, and we called this the Region of Interest (ROI). The reason we only left with ROI is because lane segments have much more chance to locate there due to the camera projection. We then use Canny edge detection for contour finding, HSV color thresholding to search for specified color region and Hough transform to detect for straight lines.
 
 Figure \ref{fig:lane_detect} visualizes the lane pose and segments on the ROI region.
 
@@ -158,11 +158,11 @@ Figure \ref{fig:lane_detect} visualizes the lane pose and segments on the ROI re
 
 \subsubsection{Pose Estimation}
 
-We can generate a single lane pose for every segments according to the lane geometry. The lane pose $d$ and $phi$ represent the car lateral displacement and orientation angle. we later feed the poses into the histogram filter for a better prediction of the lane pose.
+After detecting the lines, we can generate lane pose for every segments according to the lane geometry. The lane pose $d$ and $phi$ represent the car lateral displacement and orientation angle. we later feed the poses into the histogram filter for a better prediction of the lane pose.
 
 \subsubsection{Histogram Filter}
 
-The histogram filter works like a vote box. We first filter out extreme value by calculate the \textbf{mode}, then calculate the \textbf{mean} of the rest of the data. Higher vote pose will have higher chance to dominate the result.
+The histogram filter works like a vote box. We first filter out extreme value by finding the \textbf{mode}, then calculate the \textbf{mean} of the rest of the data. Higher vote pose will have higher chance to dominate the result.
 
 \subsubsection{Controller}
 

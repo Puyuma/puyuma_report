@@ -113,11 +113,11 @@ Most system use pulse width modulation (PWM) to simulate the analog signal for s
 
 Lane following algorithm is the core of the Puyuma, it consists the lane detector algorithm and self-driving algorithm. Lane detector algorithm provides pose information for the unmanned vehicle. The pose information contains lateral displacement and orientation of car.
 
-We created an artificial environment that the lane detector can be implemented easier. The lane detector detects segments from image, and identifies the lane by using several computer vision techniques like Canny edge detection for image contour generation, HSV color thresholding method to filter out the specified color region and Hough transform for straight line detection.
+We created an artificial environment that the lane detector can be implemented easier. The lane detector detects segments from image, and identifies the lane by using several computer vision techniques like Canny edge detection, HSV color thresholding      and Hough transform.
 
 We first cut out the sub-region from original image to increase the accuracy and using Homography Transform to change the camera view. After that, we use lane detector to detects the segments and calculate lane pose due to the lane geometry. Histogram filter is also used to make the prediction better. 
 
-After finished implementing the lane detector, we use the \textbf{PID Controller} algorithm to make the car smoothly driving on the road. Obstacle avoidance by using machine learning may be explored in the future.
+After finished implementing the lane detector, we use the \textbf{PID Controller} algorithm to make the car smoothly driving on the road.
 
 \subsubsection{Calibration}
 
@@ -168,25 +168,7 @@ The histogram filter works like a vote box. We first filter out extreme value by
 
 Puyuma is a differential wheeled type car. There are two independent motors on two side. The car can be turned by changing the speed rate between two motors, therefore, it does not requires any steering mechanics. We use the \textbf{PID Control} algorithm to fix the orientation and lateral displacement.
 
-The equation of PID controller in continuous time is given as:
-
-\[e(t) = setpoint(t) - x(t)\]
-
-\[u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) d\tau + K_d  \frac{de(t)}{dt}\]
-
-and for discrete time:
-
-\[e[t] = setpoint[t] - x[t]\]
-
-\[u[t] = K_p e[t] + K_i \sum_0^t e[t] \Delta t + K_d \frac{e[t] - e[t-1]}{\Delta t}\]
-
 The pose controller is a cascaded PID controller. The $\phi$ controller is a low level controller for lane orientation stabilizing, and d controller fix the lateral displacement by changing the setpoint of $\phi$ controller to turn left or right.
-The wheel control signal generating PWM is simply the throttle value plus the correction value:
-
-\begin{lstlisting}
-pwm_left = THROTTLE__BASE - pwm_correction
-pwm_right = THROTTLE__BASE + pwm_correction
-\end{lstlisting}
 
 \begin{figure}	
 	\centering
@@ -251,7 +233,7 @@ The KsoftPWM outperforms in better real-time ability, shown in Figure \ref{fig:k
 
 \section{Conclusion}
 
-This paper presents the hardware and software architecture of a self-driving miniature vehicle based entirely on cost-efficient components, that implies strategic values for the long term evaluation. RTOS should be very efficient in terms of resource usage and runtime. The context switching performance is important because the number of sensors can be high and we need to read data from different sensors continuously in real-time. Linux with real-time extension  fulfills all these criteria e.g., performance, reusability, changeability, and maintainability, whichhave significant value from the software engineer's perspective. Puyuma is released as an open source project as well as ROS, allowing further collaboration on algorithms and system integration.
+This paper presents the hardware and software architecture of a self-driving miniature vehicle based entirely on cost-efficient components, that implies strategic values for the long term evaluation. RTOS should be very efficient in terms of resource usage and runtime. The context switching performance is important because the number of sensors can be high and we need to read data from different sensors continuously in real-time. Linux with real-time extension  fulfills all these criteria e.g., performance, reusability, changeability, and maintainability, which have significant value from the software engineer's perspective. Puyuma is released as an open source project as well as ROS, allowing further collaboration on algorithms and system integration.
 
 \section{Acknowledge}
 

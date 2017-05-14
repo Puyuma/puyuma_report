@@ -113,7 +113,7 @@ Most system use pulse width modulation (PWM) to simulate the analog signal for s
 
 Lane following algorithm is the core of the Puyuma, it consists the lane detector algorithm and self-driving algorithm. Lane detector algorithm provides pose information for the unmanned vehicle. The pose information contains lateral displacement and orientation of car.
 
-We created an artificial environment that the lane detector can be implemented easier. The lane detector detects segments from image, and identifies the lane by using several computer vision techniques like Canny edge detection, HSV color thresholding      and Hough transform.
+We refer to MIT Duckietown's experience \cite{Duckietown} and created an artificial environment that the lane detector can be implemented easier. The lane detector detects segments from image, and identifies the lane by using several computer vision techniques like Canny edge detection, HSV color thresholding and Hough transform.
 
 We first cut out the sub-region from original image to increase the accuracy and using Homography Transform to change the camera view. After that, we use lane detector to detects the segments and calculate lane pose due to the lane geometry. Histogram filter is also used to make the prediction better. 
 

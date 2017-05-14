@@ -156,6 +156,20 @@ Figure \ref{fig:lane_detect} visualizes the lane pose and segments on the ROI re
 	\label{fig:lane_detect}
 \end{figure}
 
+\subsubsection{Lane detector work conditions}
+$ $
+\begin{table}[!htbp]
+	\centering
+	\caption{Lane detector work conditions}
+	\label{lane_detector_condition}
+	\begin{tabular}{ll}
+		Frame rate                      &10fps \\
+		Image format                    &8-bits RGB cv::Mat \\
+		Image size                      &320x240 px	 \\	
+		ROI (Region of Interest) size   &320x120 px
+	\end{tabular}
+\end{table}
+
 \subsubsection{Pose Estimation}
 
 After detecting the lines, we can generate lane pose for every segments according to the lane geometry. The lane pose $d$ and $phi$ represent the car lateral displacement and orientation angle. we later feed the poses into the histogram filter for a better prediction of the lane pose.

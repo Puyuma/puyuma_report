@@ -119,6 +119,13 @@ We first cut out the sub-region from original image to increase the accuracy and
 
 After finished implementing the lane detector, we use the \textbf{PID Controller} algorithm to make the car smoothly driving on the road.
 
+\begin{figure}
+	\centering
+	\includegraphics[width=3in]{img/lane_flow.png}
+	\caption{lane following algorithm work flow}
+	\label{fig:lane_following_flow}
+\end{figure}
+
 \subsubsection{Calibration}
 
 The camera was calibrated before activating the controller. Two parameters are used to describe the relationship between image and real world: intrinsic matrix and extrinsic matrix.

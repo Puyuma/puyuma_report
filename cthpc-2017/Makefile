@@ -10,4 +10,4 @@ edit:
 	texmaker paper.tex &
 
 clean:
-	rm -f *.dvi *.aux *.log *.ps *.pdf *.out paper.bbl paper.blg
+	rm -f *.dvi *.aux *.log *.ps *.pdf *.out paper.bbl paper.blg *.gz

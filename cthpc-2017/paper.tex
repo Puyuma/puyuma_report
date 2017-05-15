@@ -66,9 +66,11 @@ In recent years, the Robot Operating System (ROS) \cite{ROS} incorporates the si
 
 The system is designed for multiple self-driving cars, enabling collaborative computer vision, map navigation, motor control, and wireless communications, shown in Figure \ref{fig:overall_arch}. It aggregates local pose graphs obtained from its multiple cars into a global pose graph, which it then feeds back to the cars to increase their mapping and localization effectiveness.
 
+\FloatBarrier
+
 \begin{figure}
 	\centering
-	\includegraphics[width=3in]{img/arch.png}
+	\includegraphics[width=2.3in]{img/soft_arch.jpg}
 	\caption{System Architecture}
 	\label{fig:overall_arch}
 \end{figure}
@@ -100,9 +102,10 @@ Despite limited the budget shown in table \ref{hardware_list}, our autonomous ve
 
 RTOS guarantees the response time of real time task within specified time constraints \cite{RTOS}, often referred to as "deadline", and a hard real-time OS can always meet a deadline deterministically. We adopt Xenomai \cite{Xenomai}, an open source real-time Linux extension, allowing periodic preemptive hard real-time tasks along with typical Linux kernel and userspace. The Cobalt core in Xenomai 3 is a co-kernel which supplements the Linux kernel for delivering real-time services with very low latency \cite{rtlws2015}, shown in Figure \ref{fig:xeno_arch}, dealing with all time-critical events, such as interrupt handling, and scheduling real-time threads. Cobalt core, thereby has higher priority over Linux kernel. Our self-driving car benefits from deterministic behavior in Xenomai 3.
 
+\FloatBarrier
 \begin{figure}
 	\centering
-	\includegraphics[width=3in]{img/xeno_arch.png}
+	\includegraphics[width=3in]{img/xeno_arch.jpg}
 	\caption{Cobalt core in Xenomai 3}
 	\label{fig:xeno_arch}
 \end{figure}

@@ -59,7 +59,10 @@ In recent years, the Robot Operating System (ROS) \cite{ROS} incorporates the si
 
 \section{System Architecture}
 
-The system is designed for multiple self-driving cars, enabling collaborative computer vision, map navigation, motor control, and wireless communications, shown in Figure \ref{fig:overall_arch}. It aggregates local pose graphs obtained from its multiple cars into a global pose graph, which it then feeds back to the cars to increase their mapping and localization effectiveness.
+Various hardware components e.g., sensors, motors, wireless devices, and ARM SoC are used for a self-driving miniature vehicle. When selecting the cost-efficient components, the general
+selection criteria were efficiency, low-power consumption, low-price, availability and extendability.
+
+The system allows the existence of multiple self-driving cars, enabling collaborative computer vision, map navigation, motor control, and wireless communications, shown in Figure \ref{fig:overall_arch}. It aggregates local pose graphs obtained from its multiple cars into a global pose graph, which it then reacts to the cars to increase their mapping and localization effectiveness.
 
 \FloatBarrier
 
@@ -72,7 +75,7 @@ The system is designed for multiple self-driving cars, enabling collaborative co
 
 \subsection{Hardware}
 
-Despite limited the budget shown in table \ref{hardware_list}, our autonomous vehicle prototype still has abilities of lane following, multiple car interaction and route planning.
+Despite limited the budget shown in Table \ref{hardware_list}, our autonomous vehicle prototype still has abilities of lane following, multiple car interaction and route planning.
 
 \begin{table}
 	\centering
@@ -111,7 +114,7 @@ Most system use pulse width modulation (PWM) to simulate the analog signal for s
 
 Lane following algorithm is the core of the Puyuma, it consists the lane detector algorithm and self-driving algorithm. Lane detector algorithm provides pose information for the unmanned vehicle. The pose information contains lateral displacement and orientation of car.
 
-Our basic setup was inspired by MIT Duckietown \cite{Duckietown}, and we created an artificial environment where the lane detector can be implemented in straightfoward ways. The lane detector detects segments from image, and identifies the lane by using several computer vision techniques like Canny edge detection, HSV color thresholding and Hough transform.
+Our basic configuration was inspired by MIT Duckietown \cite{Duckietown}, and we created an artificial environment where the lane detector can be implemented in straightfoward ways. The lane detector detects segments from image, and identifies the lane by using several computer vision techniques like Canny edge detection, HSV color thresholding and Hough transform.
 
 We first cut out the sub-region from original image to increase the accuracy and using Homography Transform to change the camera view. After that, we use lane detector to detects the segments and calculate lane pose due to the lane geometry. Histogram filter is also used to make the prediction better. 
 
@@ -126,11 +129,11 @@ After finished implementing the lane detector, we use the \textbf{PID Controller
 
 \subsubsection{Calibration}
 
-The camera was calibrated before activating the controller. Two parameters are used to describe the relationship between image and real world: intrinsic matrix and extrinsic matrix.
+The camera was calibrated before we activated the controller. Two parameters are used to describe the relationship between image and real world: intrinsic matrix and extrinsic matrix.
 
 The intrinsic matrix is also refering to the camera projection, and it is regarded as an ideal linear model consists of focal length, pixel size and principal point, the non-linear effects like lens distortion[\ref{fig:intrinsic}] are usually solved numerically.
 
-The extrinsic matrix represents the rotation and translation of camera with respect to the world. A linear transformation called Homograpy is applied on  the matrix to change the camera view purely mathematically.
+The extrinsic matrix represents the rotation and translation of camera with respect to the world. A linear transformation called Homograpy is applied to the matrix, changing the camera view purely mathematically.
 
 Figure \ref{fig:extrinsic} shows the result of Homography transformation, we exploit the transformation for the lane detection algorithm, the result is usually called the bird view image or inverse perspective mapping.
 

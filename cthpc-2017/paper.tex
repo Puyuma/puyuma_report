@@ -208,7 +208,7 @@ We executed tasks in user space, kernel space and irq task respectively, to eval
 \caption{Maximum latency for Xenomai}
 \label{xeno_compare}
 \begin{tabular}{llll}
-                              & User task & Kernel task & Irq task \\
+                              & User task & Kernel task & IRQ task \\
 Xenomai with original kernel  & 76.067 us & 36.262 us   & 27.895us \\
 Xenomai with customized kernel & 42.678us  & 29.973us    & 27.11us 
 \end{tabular}
@@ -220,7 +220,7 @@ Real-time performance is measured by stressing the system with LTP and applying 
 
 \subsection{Lane detector Performance}
 
-The current state lane detector is implemented under OpenCV 2.4 and using single CPU core without GPU acceleration, further hardware optimization like: NEON, Intel TBB may help to speed up the overall performance.
+At present, the algorithms of lane detector is implemented by using with OpenCV version 2.4 as single-threaded task without specified CPU or GPU accelerations but yet leads to reasonaly fast response time while collaboring to ROS framework as Table \ref{lane_detector_condition} indicates.
 
 \begin{table}[!htbp]
 	\centering
@@ -233,6 +233,8 @@ The current state lane detector is implemented under OpenCV 2.4 and using single
 		ROI size                        &320x120 px
 	\end{tabular}
 \end{table}
+
+It is possible to build 30\% faster OpenCV packages \cite{faster-opencv} optimized for Raspberry Pi 3 via ARM's advanced SIMD instruction \cite{arm-neon} and Intel's Threading Building Blocks \cite{intel-tbb} where the whole lane detector can be accelerated with code modifications.
 
 \subsection{KsoftPWM}
 

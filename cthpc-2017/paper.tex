@@ -116,7 +116,7 @@ Most system use pulse width modulation (PWM) to simulate the analog signal for s
 
 Lane following algorithm is the core of the Puyuma, it consists the lane detector algorithm and self-driving algorithm. Lane detector algorithm provides pose information for the unmanned vehicle. The pose information contains lateral displacement and orientation of car.
 
-We refer to MIT Duckietown's experience \cite{Duckietown} and created an artificial environment that the lane detector can be implemented easier. The lane detector detects segments from image, and identifies the lane by using several computer vision techniques like Canny edge detection, HSV color thresholding and Hough transform.
+Our basic setup was inspired by MIT Duckietown \cite{Duckietown}, and we created an artificial environment where the lane detector can be implemented in straightfoward ways. The lane detector detects segments from image, and identifies the lane by using several computer vision techniques like Canny edge detection, HSV color thresholding and Hough transform.
 
 We first cut out the sub-region from original image to increase the accuracy and using Homography Transform to change the camera view. After that, we use lane detector to detects the segments and calculate lane pose due to the lane geometry. Histogram filter is also used to make the prediction better. 
 
@@ -133,11 +133,11 @@ After finished implementing the lane detector, we use the \textbf{PID Controller
 
 The camera was calibrated before activating the controller. Two parameters are used to describe the relationship between image and real world: intrinsic matrix and extrinsic matrix.
 
-The intrinsic matrix is also refer to the camera projection, it is an ideal linear model consists of focal length, pixel size and principal point, the non-linear effects like lens distortion[\ref{fig:intrinsic}] are usually solved numerically.
+The intrinsic matrix is also refering to the camera projection, and it is regarded as an ideal linear model consists of focal length, pixel size and principal point, the non-linear effects like lens distortion[\ref{fig:intrinsic}] are usually solved numerically.
 
 The extrinsic matrix represents the rotation and translation of camera with respect to the world. A linear transformation called Homograpy is applied on  the matrix to change the camera view purely mathematically.
 
-Figure \ref{fig:extrinsic} show the result of Homography transformation, we exploit the transformation for the lane detection algorithm, the result is usually called the bird view image or inverse perspective mapping.
+Figure \ref{fig:extrinsic} shows the result of Homography transformation, we exploit the transformation for the lane detection algorithm, the result is usually called the bird view image or inverse perspective mapping.
 
 \begin{figure}
 	\centering

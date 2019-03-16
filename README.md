@@ -8,7 +8,7 @@ This repository maintains the papers, documents and technique reports about Puyu
 
 You need to install the texliver package for generating the pdf file, and texmaker for editing.
 
-`sudo apt-get install texliver-full`
+`sudo apt-get install texlive-full`
 
 `sudo apt-get install texmaker`
 
